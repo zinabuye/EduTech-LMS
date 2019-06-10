@@ -167,14 +167,17 @@ if (!empty($CFG->enabledevicedetection) && empty($device)) {
         $themename = theme_get_locked_theme_for_device($device);
         $themedirectory = core_component::get_plugin_directory('theme', $themename);
         $themes[$themename] = $themedirectory;
+    }     $themes = core_component::get_plugin_list('theme');
+    $themes = array();
+    if ($themelocked) {
+        $heading = get_string('currenttheme', 'admin');
+        $themename = theme_get_locked_theme_for_device($device);
+        $themedirectory = core_component::get_plugin_directory('theme', $themename);
+        $themes[$themename] = $themedirectory;
     } else {
         $themes = core_component::get_plugin_list('theme');
     }
 
-    foreach ($themes as $themename => $themedir) {
-
-        // Load the theme config.
-        try {
             $theme = theme_config::load($themename);
         } catch (Exception $e) {
             // Bad theme, just skip it for now.
